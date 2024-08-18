@@ -1070,6 +1070,7 @@ class HookedTransformer(HookedRootModule):
         fold_value_biases: bool = True,
         default_prepend_bos: bool = True,
         default_padding_side: Literal["left", "right"] = "right",
+        override_max_context_length: Optional[int] = None,
         dtype="float32",
         **from_pretrained_kwargs,
     ) -> "HookedTransformer":
@@ -1262,6 +1263,7 @@ class HookedTransformer(HookedRootModule):
             n_devices=n_devices,
             default_prepend_bos=default_prepend_bos,
             dtype=dtype,
+            override_max_context_length=override_max_context_length,
             **from_pretrained_kwargs,
         )
 

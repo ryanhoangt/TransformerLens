@@ -1388,6 +1388,7 @@ def get_pretrained_model_config(
     device: Optional[Union[str, torch.device]] = None,
     n_devices: int = 1,
     default_prepend_bos: bool = True,
+    override_max_context_length: Optional[int] = None,
     dtype: torch.dtype = torch.float32,
     **kwargs,
 ):
@@ -1422,6 +1423,8 @@ def get_pretrained_model_config(
             so this empirically seems to give better results. To change the default behavior to False, pass in
             default_prepend_bos=False. Note that you can also locally override the default behavior by passing
             in prepend_bos=True/False when you call a method that processes the input string.
+        override_max_context_length (int, optional): The maximum value of :attr:`transformer_lens.HookedTransformer.    n_ctx` to use
+            for the model. If None, `n_ctx` is left unchanged. Defaults to None.
         dtype (torch.dtype, optional): The dtype to load the TransformerLens model in.
         kwargs: Other optional arguments passed to HuggingFace's from_pretrained.
             Also given to other HuggingFace functions when compatible.
@@ -1468,6 +1471,9 @@ def get_pretrained_model_config(
         cfg_dict["device"] = device
 
     cfg_dict["dtype"] = dtype
+    # If override_max_context_length is specified, use it to cap n_ctx
+    if override_max_context_length and "n_ctx" in cfg_dict:
+        cfg_dict["n_ctx"] = override_max_context_length
 
     if fold_ln:
         if cfg_dict["normalization_type"] in ["LN", "LNPre"]:
