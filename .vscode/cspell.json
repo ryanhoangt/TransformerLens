@@ -136,5 +136,8 @@
         "visualisation",
         "xaxis",
         "yaxis"
+    ],
+    "enableFiletypes": [
+        "!python"
     ]
 }
